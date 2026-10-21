@@ -1,0 +1,88 @@
+:host {
+  display: flex;
+  min-block-size: 0;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-block-size: 0;
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ugm-space-2);
+  padding: var(--ugm-space-3) var(--ugm-space-4) var(--ugm-space-2);
+}
+
+.heading {
+  flex: 1;
+  min-inline-size: 0;
+
+  h2 {
+    margin: 0;
+    font: var(--ugm-type-title-l);
+  }
+}
+
+.summary {
+  margin: 0;
+  font: var(--ugm-type-body-m);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.tools {
+  display: flex;
+  gap: var(--ugm-space-1);
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: var(--ugm-space-2);
+  margin: 0 var(--ugm-space-4) var(--ugm-space-2);
+  padding: var(--ugm-space-2) var(--ugm-space-3);
+  border-radius: var(--ugm-shape-m);
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+  font: var(--ugm-type-body-m);
+}
+
+.groups {
+  flex: 1;
+  min-block-size: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ugm-space-3);
+  padding: var(--ugm-space-1) var(--ugm-space-4) var(--ugm-space-6);
+  scroll-padding-block: var(--ugm-space-6);
+}
+
+.add-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ugm-space-3);
+}
+
+.hint {
+  margin: 0;
+  font: var(--ugm-type-body-m);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.footer {
+  text-align: center;
+  padding-block-start: var(--ugm-space-2);
+}
+
+// Tastaturhinweis nur dort, wo vermutlich eine Tastatur da ist.
+@media (pointer: coarse) {
+  .keyboard-hint {
+    display: none;
+  }
+}

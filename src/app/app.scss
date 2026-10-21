@@ -1,0 +1,124 @@
+:host {
+  display: block;
+  block-size: 100dvh;
+}
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  overflow: hidden;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--ugm-space-4);
+  inset-block-start: var(--ugm-space-2);
+  z-index: 1000;
+  padding: var(--ugm-space-3) var(--ugm-space-4);
+  border-radius: var(--ugm-shape-full);
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  font: var(--ugm-type-label-l);
+  transform: translateY(-200%);
+
+  &:focus {
+    transform: none;
+  }
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  min-block-size: 0;
+  outline: none;
+}
+
+.pane {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+// Zwei Spalten ab 840 px: Squad links, Builds/Rollen rechts (Aufbau des Originals).
+.columns {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 1fr);
+  gap: var(--ugm-space-4);
+  inline-size: 100%;
+  max-inline-size: var(--ugm-content-max);
+  margin-inline: auto;
+  padding: var(--ugm-space-4);
+  min-block-size: 0;
+  box-sizing: border-box;
+}
+
+.columns .pane {
+  display: flex;
+  min-block-size: 0;
+  border-radius: var(--ugm-shape-xl);
+  background: var(--mat-sys-surface-container-lowest);
+  overflow: hidden;
+}
+
+.side {
+  flex-direction: column;
+}
+
+.tabs {
+  flex-shrink: 0;
+  padding-inline: var(--ugm-space-2);
+}
+
+.side-content {
+  flex: 1;
+  display: flex;
+  min-block-size: 0;
+
+  > * {
+    flex: 1;
+  }
+}
+
+// Navigation unten auf schmalen Bildschirmen (M3 Navigation Bar, ≤ 5 Ziele).
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  min-block-size: var(--app-bottom-nav-height);
+  padding-block-end: env(safe-area-inset-bottom);
+  background: var(--mat-sys-surface-container);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ugm-space-1);
+  min-inline-size: var(--ugm-target-min);
+  border: none;
+  background: transparent;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--ugm-type-label-l);
+  cursor: pointer;
+}
+
+.indicator {
+  display: grid;
+  place-items: center;
+  inline-size: 4rem;
+  block-size: 2rem;
+  border-radius: var(--ugm-shape-full);
+  transition: background-color var(--ugm-motion-default-effects);
+}
+
+.active {
+  color: var(--mat-sys-on-surface);
+  font-weight: 700;
+
+  .indicator {
+    background: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+  }
+}

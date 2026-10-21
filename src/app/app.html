@@ -1,0 +1,78 @@
+@let t = i18n.t();
+<a class="skip-link" href="#main" (click)="$event.preventDefault(); main.focus()">{{
+  t.nav.skip
+}}</a>
+
+<div class="shell" [class.compact]="layout.isCompact()">
+  <app-top-bar />
+
+  <main #main id="main" class="main" tabindex="-1">
+    @if (layout.expanded()) {
+      <div class="columns">
+        <app-squad-panel class="pane squad" />
+        <div class="pane side">
+          <nav mat-tab-nav-bar [tabPanel]="sidePanel" class="tabs" mat-stretch-tabs="false">
+            <a
+              mat-tab-link
+              [active]="layout.sideTab() === 'builds'"
+              (click)="layout.sideTab.set('builds')"
+            >
+              {{ t.nav.builds }}
+            </a>
+            <a
+              mat-tab-link
+              [active]="layout.sideTab() === 'roles'"
+              (click)="layout.sideTab.set('roles')"
+            >
+              {{ t.nav.roles }}
+            </a>
+          </nav>
+          <mat-tab-nav-panel #sidePanel class="side-content">
+            @if (layout.sideTab() === 'builds') {
+              <app-library-panel />
+            } @else {
+              @defer (on immediate) {
+                <app-role-overview />
+              }
+            }
+          </mat-tab-nav-panel>
+        </div>
+      </div>
+    } @else {
+      @switch (layout.view()) {
+        @case ('squad') {
+          <app-squad-panel class="pane" />
+        }
+        @case ('builds') {
+          <app-library-panel class="pane" />
+        }
+        @case ('roles') {
+          @defer (on immediate) {
+            <app-role-overview class="pane" />
+          }
+        }
+      }
+    }
+  </main>
+
+  @if (layout.expanded() || selection.current()) {
+    <app-selection-bar />
+  }
+
+  @if (layout.isCompact()) {
+    <nav class="bottom-nav" [attr.aria-label]="t.nav.label">
+      @for (view of views; track view.id) {
+        <button
+          type="button"
+          class="nav-item"
+          [class.active]="layout.view() === view.id"
+          [attr.aria-current]="layout.view() === view.id ? 'page' : null"
+          (click)="layout.show(view.id)"
+        >
+          <span class="indicator"><mat-icon [svgIcon]="view.icon" aria-hidden="true" /></span>
+          <span class="nav-label">{{ viewLabel(view.id) }}</span>
+        </button>
+      }
+    </nav>
+  }
+</div>

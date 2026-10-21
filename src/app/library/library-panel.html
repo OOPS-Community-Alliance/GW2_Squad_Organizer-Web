@@ -1,0 +1,72 @@
+@let t = i18n.t().library;
+<section class="panel" aria-labelledby="library-title">
+  <header class="head">
+    <div class="heading">
+      <h2 id="library-title" [class.visually-hidden]="layout.expanded()">{{ t.title }}</h2>
+      <p class="summary">{{ t.count(store.builds().length) }}</p>
+    </div>
+    <button matButton="tonal" type="button" (click)="actions.createBuild()">
+      <mat-icon svgIcon="add" />
+      {{ t.create }}
+    </button>
+  </header>
+
+  @if (store.builds().length) {
+    <div class="filters" role="search">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search">
+        <mat-label>{{ t.searchLabel }}</mat-label>
+        <mat-icon matPrefix svgIcon="search" />
+        <input
+          matInput
+          type="search"
+          [value]="query()"
+          (input)="query.set($any($event.target).value)"
+          autocomplete="off"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="profession">
+        <mat-label>{{ t.filterLabel }}</mat-label>
+        <mat-select [value]="profession()" (valueChange)="profession.set($event)">
+          <mat-option value="all">{{ t.all }}</mat-option>
+          @for (p of professions(); track p) {
+            <mat-option [value]="p">
+              <span class="option">
+                @if (iconUrl(p, 'Core'); as icon) {
+                  <img [src]="icon" alt="" width="24" height="24" />
+                }
+                {{ i18n.profession(p) }}
+              </span>
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  }
+
+  <div class="scroll" data-autoscroll>
+    @if (!store.builds().length) {
+      <div class="empty">
+        <mat-icon svgIcon="library_books" aria-hidden="true" />
+        <h3>{{ t.emptyTitle }}</h3>
+        <p>{{ t.emptyText }}</p>
+        <button matButton="outlined" type="button" (click)="actions.createBuild()">
+          <mat-icon svgIcon="add" />
+          {{ t.create }}
+        </button>
+      </div>
+    } @else if (!filtered().length) {
+      <div class="empty">
+        <p>{{ t.noMatch }}</p>
+        <button matButton="outlined" type="button" (click)="resetFilter()">
+          {{ t.clearFilter }}
+        </button>
+      </div>
+    } @else {
+      <ul class="grid" role="list">
+        @for (build of filtered(); track build.id) {
+          <li><app-build-card [build]="build" /></li>
+        }
+      </ul>
+    }
+  </div>
+</section>

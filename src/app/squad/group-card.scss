@@ -1,0 +1,82 @@
+.group {
+  padding: var(--ugm-space-2) var(--ugm-space-3) var(--ugm-space-3);
+  // Konzentrisch zur Spalte: 28 px außen − 16 px Abstand = 12 px.
+  border-radius: var(--ugm-shape-m);
+  background: var(--mat-sys-surface-container-low);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ugm-space-2);
+  min-block-size: var(--ugm-target-min);
+}
+
+.title {
+  margin: 0;
+  font: var(--ugm-type-title-m);
+}
+
+.menu {
+  margin-inline-start: auto;
+}
+
+.roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ugm-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Status nie nur über Farbe: Icon und Text tragen die Information.
+.role {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ugm-space-1);
+  padding: 0.125rem var(--ugm-space-2) 0.125rem var(--ugm-space-1);
+  border-radius: var(--ugm-shape-full);
+  font: var(--ugm-type-label-s);
+  background: var(--mat-sys-surface-container-highest);
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  &.missing {
+    background: var(--mat-sys-tertiary-container);
+    color: var(--mat-sys-on-tertiary-container);
+  }
+}
+
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ugm-target-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.add {
+  display: grid;
+  place-items: center;
+  inline-size: var(--app-slot-size);
+  block-size: var(--app-slot-size);
+  border: 1px dashed var(--mat-sys-outline);
+  border-radius: var(--ugm-shape-m);
+  background: transparent;
+  color: var(--mat-sys-primary);
+  cursor: pointer;
+  transition: background-color var(--ugm-motion-fast-effects);
+
+  @media (hover: hover) {
+    &:hover {
+      background: var(--mat-sys-surface-container-high);
+    }
+  }
+}

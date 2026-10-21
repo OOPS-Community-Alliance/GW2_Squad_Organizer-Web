@@ -1,0 +1,65 @@
+@let t = i18n.t().post;
+<h2 mat-dialog-title>{{ t.title }}</h2>
+
+<mat-dialog-content class="content">
+  <mat-form-field appearance="outline">
+    <mat-label>{{ t.text }}</mat-label>
+    <textarea
+      matInput
+      [formControl]="text"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="8"
+      cdkAutosizeMaxRows="18"
+    ></textarea>
+    <mat-hint>{{ t.textHint }}</mat-hint>
+  </mat-form-field>
+
+  <mat-checkbox [checked]="includeLink()" (change)="toggleLink($event.checked)">
+    {{ t.includeLink }}
+  </mat-checkbox>
+  @if (includeLink() && link()) {
+    <p class="link-preview">
+      {{ t.linkLabel }}: <span class="url">{{ link() }}</span>
+    </p>
+  }
+
+  <section class="image" [attr.aria-busy]="!image()">
+    <h3>{{ t.image }}</h3>
+    @if (image(); as image) {
+      <img [src]="image.url" [alt]="t.imageAlt(squad.name)" />
+    } @else {
+      <p class="rendering">
+        <mat-spinner diameter="24" aria-hidden="true" />
+        {{ t.rendering }}
+      </p>
+    }
+  </section>
+
+  <mat-form-field appearance="outline">
+    <mat-label>{{ t.fileName }}</mat-label>
+    <input matInput [formControl]="fileName" autocomplete="off" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions class="actions">
+  <button matButton type="button" mat-dialog-close>{{ i18n.t().common.close }}</button>
+  <span class="spacer"></span>
+  @if (canShareFiles()) {
+    <button matButton="outlined" type="button" (click)="share()">
+      <mat-icon svgIcon="share" />
+      {{ t.shareNative }}
+    </button>
+  }
+  <button matButton="outlined" type="button" (click)="saveText()">
+    <mat-icon svgIcon="download" />
+    {{ t.downloadText }}
+  </button>
+  <button matButton="outlined" type="button" (click)="saveImage()" [disabled]="!image()">
+    <mat-icon svgIcon="image" />
+    {{ t.downloadImage }}
+  </button>
+  <button matButton="filled" type="button" (click)="copy()">
+    <mat-icon svgIcon="content_copy" />
+    {{ t.copyText }}
+  </button>
+</mat-dialog-actions>

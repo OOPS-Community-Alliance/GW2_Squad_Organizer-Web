@@ -1,0 +1,92 @@
+@let t = i18n.t().selection;
+<section class="bar" [class.empty]="!build()" [attr.aria-label]="t.region">
+  @if (build(); as build) {
+    <div class="info">
+      @if (icon(); as icon) {
+        <img [src]="icon" alt="" width="40" height="40" />
+      }
+      <div class="text">
+        <p class="name">
+          {{ build.name }}
+          @if (slot(); as slot) {
+            <span class="position"
+              >· {{ i18n.t().slot.position(slot.group + 1, slot.slot + 1) }}</span
+            >
+          }
+        </p>
+        <p class="meta">
+          {{ i18n.buildDetail(build) }}
+          @for (tag of build.tags; track tag) {
+            <span class="tag">{{ i18n.t().tags[tag] }}</span>
+          }
+        </p>
+        <p class="meta">{{ t.updated(i18n.formatDate(build.updatedAt)) }}</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      @if (build.link) {
+        <a
+          matButton="outlined"
+          [href]="build.link"
+          target="_blank"
+          rel="noopener noreferrer"
+          [matTooltip]="build.link + ' — ' + t.linkWarning"
+        >
+          <mat-icon svgIcon="open_in_new" />
+          {{ t.openLink(host()) }}
+        </a>
+      }
+
+      @if (slot(); as slot) {
+        <button matButton="tonal" type="button" (click)="actions.clearSlot(slot)">
+          <mat-icon svgIcon="person_remove" />
+          {{ t.removeFromSlot }}
+        </button>
+      } @else if (showPlaceInSquad()) {
+        <button matButton="tonal" type="button" (click)="actions.startPlacing(build.id)">
+          <mat-icon svgIcon="groups" />
+          {{ t.placeInSquad }}
+        </button>
+      } @else {
+        <button matButton="tonal" type="button" (click)="actions.placeInNextFree(build.id)">
+          <mat-icon svgIcon="playlist_add" />
+          {{ t.placeNext }}
+        </button>
+      }
+
+      <button
+        matIconButton
+        type="button"
+        [matMenuTriggerFor]="menu"
+        [attr.aria-label]="i18n.t().common.more"
+      >
+        <mat-icon svgIcon="more_vert" />
+      </button>
+      <button matIconButton type="button" (click)="selection.clear()" [attr.aria-label]="t.clear">
+        <mat-icon svgIcon="close" />
+      </button>
+    </div>
+
+    <mat-menu #menu="matMenu">
+      @if (slot(); as slot) {
+        <button mat-menu-item type="button" (click)="actions.pickInto(slot)">
+          <mat-icon svgIcon="swap_horiz" />
+          <span>{{ t.replace }}</span>
+        </button>
+      }
+      <button mat-menu-item type="button" (click)="actions.editBuild(build.id)">
+        <mat-icon svgIcon="edit" />
+        <span>{{ i18n.t().common.edit }}</span>
+      </button>
+      <button mat-menu-item type="button" (click)="actions.deleteBuild(build.id)">
+        <mat-icon svgIcon="delete" />
+        <span>{{ i18n.t().deleteBuild.action }} …</span>
+      </button>
+    </mat-menu>
+  } @else {
+    <p class="none">{{ t.none }}</p>
+  }
+
+  <p class="visually-hidden" aria-live="polite">{{ hint() }}</p>
+</section>

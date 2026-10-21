@@ -1,0 +1,79 @@
+@let t = i18n.t();
+<section class="panel" aria-labelledby="squad-title" data-squad-area>
+  <header class="head">
+    <div class="heading">
+      <h2 id="squad-title">{{ t.squad.title }}</h2>
+      <p class="summary">{{ t.squad.summary(occupied(), slots(), squad().groups.length) }}</p>
+    </div>
+    <div class="tools">
+      <button
+        matIconButton
+        type="button"
+        (click)="actions.undo()"
+        [disabled]="!store.canUndo()"
+        [attr.aria-label]="t.common.undo"
+        [matTooltip]="t.common.undoShortcut"
+      >
+        <mat-icon svgIcon="undo" />
+      </button>
+      <button
+        matIconButton
+        type="button"
+        (click)="actions.redo()"
+        [disabled]="!store.canRedo()"
+        [attr.aria-label]="t.common.redo"
+        [matTooltip]="t.common.redoShortcut"
+      >
+        <mat-icon svgIcon="redo" />
+      </button>
+      <button
+        matIconButton
+        type="button"
+        [matMenuTriggerFor]="menu"
+        [attr.aria-label]="t.common.more"
+      >
+        <mat-icon svgIcon="more_vert" />
+      </button>
+    </div>
+  </header>
+
+  @if (overCap()) {
+    <p class="notice" role="status">
+      <mat-icon svgIcon="info" aria-hidden="true" />
+      {{ t.squad.overCap(cap) }}
+    </p>
+  }
+
+  <div class="groups" data-autoscroll (keydown)="onKeydown($event)" (keydown.escape)="onEscape()">
+    @for (group of squad().groups; track $index) {
+      <app-group-card [index]="$index" [group]="group" [groupCount]="squad().groups.length" />
+    }
+
+    <div class="add-group">
+      <button
+        matButton="outlined"
+        type="button"
+        (click)="actions.addGroup()"
+        [disabled]="squad().groups.length >= maxGroups"
+        [attr.aria-describedby]="squad().groups.length >= maxGroups ? 'max-groups' : null"
+      >
+        <mat-icon svgIcon="group_add" />
+        {{ t.squad.addGroup }}
+      </button>
+      @if (squad().groups.length >= maxGroups) {
+        <span id="max-groups" class="hint">{{ t.squad.maxGroups }}</span>
+      }
+    </div>
+    <p class="hint footer">
+      {{ t.squad.hint }}
+      <span class="keyboard-hint">{{ t.squad.keyboardHint }}</span>
+    </p>
+  </div>
+</section>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item type="button" (click)="actions.resetSquad()">
+    <mat-icon svgIcon="restart_alt" />
+    <span>{{ t.squad.reset }}</span>
+  </button>
+</mat-menu>

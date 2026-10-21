@@ -1,0 +1,118 @@
+:host {
+  display: contents;
+}
+
+.slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: var(--app-slot-size);
+  block-size: var(--app-slot-size);
+  padding: 0;
+  border: 1px dashed var(--mat-sys-outline-variant);
+  border-radius: var(--ugm-shape-m);
+  background: var(--mat-sys-surface-container-lowest);
+  color: var(--mat-sys-on-surface-variant);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background-color var(--ugm-motion-fast-effects),
+    border-color var(--ugm-motion-fast-effects),
+    transform var(--ugm-motion-fast-spatial);
+
+  img {
+    inline-size: var(--app-slot-icon);
+    block-size: var(--app-slot-icon);
+    pointer-events: none;
+  }
+
+  // State Layer nach Material, ohne Abhängigkeit von Hover.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--ugm-motion-fast-effects);
+  }
+
+  @media (hover: hover) {
+    &:hover::after {
+      opacity: 0.08;
+    }
+  }
+
+  &:active::after {
+    opacity: 0.12;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.filled {
+  border-style: solid;
+  border-color: transparent;
+  background: var(--mat-sys-surface-container-high);
+  cursor: grab;
+}
+
+.hint {
+  inline-size: 20px;
+  block-size: 20px;
+}
+
+.dot {
+  inline-size: 4px;
+  block-size: 4px;
+  border-radius: var(--ugm-shape-full);
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.fallback {
+  font: var(--ugm-type-label-l);
+  color: var(--mat-sys-on-surface);
+}
+
+// Ausgewählt: Ring plus dickerer Rahmen, nicht nur Farbe.
+.selected {
+  border: 3px solid var(--mat-sys-primary);
+  background: var(--mat-sys-primary-container);
+}
+
+.related {
+  border: 2px solid var(--mat-sys-primary);
+}
+
+.target:not(.filled) {
+  border-color: var(--mat-sys-primary);
+  color: var(--mat-sys-primary);
+}
+
+.over {
+  border: 3px solid var(--mat-sys-tertiary);
+  background: var(--mat-sys-tertiary-container);
+  transform: scale(1.06);
+}
+
+.origin {
+  opacity: 0.4;
+}
+
+@media (forced-colors: active) {
+  .selected,
+  .over {
+    outline: 3px solid Highlight;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot:active,
+  .over {
+    transform: none;
+  }
+}

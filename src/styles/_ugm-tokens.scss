@@ -1,0 +1,55 @@
+// UGM-Ergänzungen zu den --mat-sys-*-Variablen (Unified Glass & Material, tokens.md).
+// Farben kommen ausschließlich aus Material-Rollen; hier stehen Raster, Formen, Motion und Typografie.
+:root {
+  --ugm-font: system-ui, -apple-system, 'Segoe UI', 'Roboto Flex', Roboto, sans-serif;
+
+  --ugm-type-headline-s: 400 1.5rem/2rem var(--ugm-font);
+  --ugm-type-title-l: 400 1.375rem/1.75rem var(--ugm-font);
+  --ugm-type-title-m: 500 1rem/1.5rem var(--ugm-font);
+  --ugm-type-body-l: 400 1rem/1.5rem var(--ugm-font);
+  --ugm-type-body-m: 400 0.875rem/1.25rem var(--ugm-font);
+  --ugm-type-label-l: 500 0.875rem/1.25rem var(--ugm-font);
+  --ugm-type-label-s: 500 0.75rem/1rem var(--ugm-font);
+
+  --ugm-space-1: 0.25rem;
+  --ugm-space-2: 0.5rem;
+  --ugm-space-3: 0.75rem;
+  --ugm-space-4: 1rem;
+  --ugm-space-6: 1.5rem;
+  --ugm-space-8: 2rem;
+  --ugm-space-12: 3rem;
+
+  --ugm-target-min: 48px;
+  --ugm-target-gap: var(--ugm-space-3);
+  --ugm-content-max: 90rem;
+
+  // Squad-Slot: 56 px sichtbar, Icon 40 px. Liegt über dem 48-px-Mindestziel.
+  --app-slot-size: 3.5rem;
+  --app-slot-icon: 2.5rem;
+
+  --ugm-shape-xs: 4px;
+  --ugm-shape-s: 8px;
+  --ugm-shape-m: 12px;
+  --ugm-shape-l: 16px;
+  --ugm-shape-xl: 28px;
+  --ugm-shape-full: 9999px;
+
+  --ugm-motion-fast-spatial: 350ms cubic-bezier(0.27, 1.06, 0.18, 1);
+  --ugm-motion-default-spatial: 500ms cubic-bezier(0.27, 1.06, 0.18, 1);
+  --ugm-motion-fast-effects: 150ms cubic-bezier(0.31, 0.94, 0.34, 1);
+  --ugm-motion-default-effects: 200ms cubic-bezier(0.34, 0.8, 0.34, 1);
+
+  --ugm-focus-ring-color: var(--mat-sys-primary);
+  --ugm-focus-ring-width: 3px;
+  --ugm-focus-ring-offset: 2px;
+
+  --app-top-bar-height: 4rem;
+  --app-bottom-nav-height: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ugm-motion-fast-spatial: 1ms linear;
+    --ugm-motion-default-spatial: 1ms linear;
+  }
+}

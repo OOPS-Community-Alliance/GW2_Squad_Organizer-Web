@@ -1,0 +1,105 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ugm-space-2);
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  gap: var(--ugm-space-3);
+  padding: var(--ugm-space-3);
+  margin-block: var(--ugm-space-2);
+  border-radius: var(--ugm-shape-m);
+  background: var(--mat-sys-surface-container-high);
+}
+
+.preview-name {
+  font: var(--ugm-type-title-m);
+}
+
+.preview-spec {
+  font: var(--ugm-type-body-m);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ugm-space-2);
+}
+
+.group {
+  border: none;
+  margin: 0 0 var(--ugm-space-3);
+  padding: 0;
+
+  legend {
+    font: var(--ugm-type-label-l);
+    margin-block-end: var(--ugm-space-2);
+    padding: 0;
+  }
+}
+
+.hint {
+  margin: var(--ugm-space-2) 0 0;
+  font: var(--ugm-type-body-m);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+// Elite-Auswahl als Kacheln: native Radio-Buttons, damit Tastatur und Screenreader wie gewohnt funktionieren.
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: var(--ugm-space-2);
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ugm-space-1);
+  min-block-size: calc(var(--ugm-target-min) + var(--ugm-space-6));
+  padding: var(--ugm-space-2);
+  border-radius: var(--ugm-shape-m);
+  border: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-low);
+  font: var(--ugm-type-body-m);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color var(--ugm-motion-fast-effects),
+    border-color var(--ugm-motion-fast-effects);
+
+  input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  &:has(input:checked) {
+    border: 2px solid var(--mat-sys-primary);
+    background: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+    font-weight: 600;
+  }
+
+  &:has(input:focus-visible) {
+    outline: var(--ugm-focus-ring-width) solid var(--ugm-focus-ring-color);
+    outline-offset: var(--ugm-focus-ring-offset);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: var(--mat-sys-surface-container-high);
+    }
+  }
+}
+
+mat-form-field {
+  inline-size: 100%;
+}

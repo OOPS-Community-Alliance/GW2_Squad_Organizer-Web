@@ -1,0 +1,135 @@
+@let t = i18n.t();
+@let active = store.activeSquad();
+<header class="top-bar">
+  <img class="logo" src="icons/app-icon.svg" alt="" width="32" height="32" />
+  <h1 class="title" [class.visually-hidden]="layout.isCompact()">{{ t.appName }}</h1>
+
+  <button
+    matButton
+    type="button"
+    class="switcher"
+    [matMenuTriggerFor]="squadMenu"
+    [attr.aria-label]="t.squads.switcher(active.name)"
+  >
+    <span class="squad-name">{{ active.name }}</span>
+    <mat-icon svgIcon="arrow_drop_down" iconPositionEnd />
+  </button>
+
+  <span class="spacer"></span>
+
+  <button
+    matButton="filled"
+    type="button"
+    [matMenuTriggerFor]="shareMenu"
+    [attr.aria-label]="t.top.shareMenu"
+  >
+    <mat-icon svgIcon="share" />
+    {{ t.top.share }}
+  </button>
+  <button
+    matIconButton
+    type="button"
+    [matMenuTriggerFor]="moreMenu"
+    [attr.aria-label]="t.common.more"
+  >
+    <mat-icon svgIcon="more_vert" />
+  </button>
+</header>
+
+<mat-menu #squadMenu="matMenu">
+  <div class="menu-label" aria-hidden="true">{{ t.squads.list }}</div>
+  @for (squad of store.squads(); track squad.id) {
+    <button
+      mat-menu-item
+      type="button"
+      role="menuitemradio"
+      [attr.aria-checked]="squad.id === active.id"
+      (click)="actions.switchSquad(squad.id)"
+    >
+      <mat-icon [svgIcon]="squad.id === active.id ? 'check' : 'groups'" />
+      <span>{{ squad.name }}</span>
+    </button>
+  }
+  <hr class="divider" />
+  <button mat-menu-item type="button" (click)="actions.newSquad()">
+    <mat-icon svgIcon="add" />
+    <span>{{ t.squads.create }}</span>
+  </button>
+  <button mat-menu-item type="button" (click)="actions.duplicateSquad()">
+    <mat-icon svgIcon="content_copy" />
+    <span>{{ t.squads.duplicate }}</span>
+  </button>
+  <button mat-menu-item type="button" (click)="actions.renameSquad()">
+    <mat-icon svgIcon="edit" />
+    <span>{{ t.squads.rename }}</span>
+  </button>
+  <button mat-menu-item type="button" (click)="actions.deleteSquad()">
+    <mat-icon svgIcon="delete" />
+    <span>{{ t.squads.remove }}</span>
+  </button>
+</mat-menu>
+
+<mat-menu #shareMenu="matMenu">
+  <button mat-menu-item type="button" (click)="actions.copyShareLink()">
+    <mat-icon svgIcon="link" />
+    <span>{{ t.top.copyLink }}</span>
+  </button>
+  <button mat-menu-item type="button" (click)="actions.openPost()">
+    <mat-icon svgIcon="post_add" />
+    <span>{{ t.top.createPost }}</span>
+  </button>
+  <button mat-menu-item type="button" (click)="actions.exportJson()">
+    <mat-icon svgIcon="data_object" />
+    <span>{{ t.top.exportJson }}</span>
+  </button>
+</mat-menu>
+
+<mat-menu #moreMenu="matMenu">
+  <button mat-menu-item type="button" (click)="actions.importJson()">
+    <mat-icon svgIcon="upload_file" />
+    <span>{{ t.top.importJson }}</span>
+  </button>
+  <button mat-menu-item type="button" [matMenuTriggerFor]="langMenu">
+    <mat-icon svgIcon="translate" />
+    <span>{{ t.top.language }}</span>
+  </button>
+  <button mat-menu-item type="button" [matMenuTriggerFor]="themeMenu">
+    <mat-icon svgIcon="contrast" />
+    <span>{{ t.top.appearance }}</span>
+  </button>
+  <button mat-menu-item type="button" (click)="dialogs.about()">
+    <mat-icon svgIcon="help" />
+    <span>{{ t.top.about }}</span>
+  </button>
+</mat-menu>
+
+<mat-menu #langMenu="matMenu">
+  @for (lang of langs; track lang) {
+    <button
+      mat-menu-item
+      type="button"
+      role="menuitemradio"
+      [attr.aria-checked]="i18n.lang() === lang"
+      [attr.lang]="lang"
+      (click)="i18n.lang.set(lang)"
+    >
+      <mat-icon [svgIcon]="i18n.lang() === lang ? 'check' : 'translate'" />
+      <span>{{ t.languageNames[lang] }}</span>
+    </button>
+  }
+</mat-menu>
+
+<mat-menu #themeMenu="matMenu">
+  @for (theme of themes; track theme.mode) {
+    <button
+      mat-menu-item
+      type="button"
+      role="menuitemradio"
+      [attr.aria-checked]="layout.theme() === theme.mode"
+      (click)="layout.theme.set(theme.mode)"
+    >
+      <mat-icon [svgIcon]="layout.theme() === theme.mode ? 'check' : theme.icon" />
+      <span>{{ themeLabel(theme.mode) }}</span>
+    </button>
+  }
+</mat-menu>

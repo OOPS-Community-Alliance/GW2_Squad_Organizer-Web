@@ -1,0 +1,117 @@
+@let t = i18n.t().buildForm;
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <h2 mat-dialog-title>{{ editing ? t.editTitle : t.createTitle }}</h2>
+
+  <mat-dialog-content class="content">
+    <div class="preview" aria-hidden="true">
+      @if (preview().icon; as icon) {
+        <img [src]="icon" alt="" width="48" height="48" />
+      }
+      <div>
+        <div class="preview-name">{{ form.controls.name.value || '…' }}</div>
+        <div class="preview-spec">{{ preview().label }}</div>
+      </div>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ t.profession }}</mat-label>
+      <mat-select formControlName="profession">
+        @for (profession of professions; track profession) {
+          <mat-option [value]="profession">
+            <span class="option">
+              @if (iconUrl(profession, 'Core'); as icon) {
+                <img [src]="icon" alt="" width="24" height="24" />
+              }
+              {{ i18n.profession(profession) }}
+            </span>
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <fieldset class="group">
+      <legend>{{ t.elite }}</legend>
+      <div class="tiles">
+        @for (spec of specs(); track spec) {
+          <label class="tile">
+            <input type="radio" formControlName="elite" [value]="spec" name="elite" />
+            @if (iconUrl(form.controls.profession.value, spec); as icon) {
+              <img [src]="icon" alt="" width="32" height="32" />
+            }
+            <span>{{ spec }}</span>
+          </label>
+        }
+      </div>
+      <p class="hint">{{ t.eliteHint }}</p>
+    </fieldset>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ t.name }}</mat-label>
+      <input
+        matInput
+        formControlName="name"
+        [maxlength]="limits.nameMaxLength"
+        autocomplete="off"
+        required
+      />
+      <mat-hint>{{ t.nameHint }}</mat-hint>
+      @if (form.controls.name.hasError('required')) {
+        <mat-error>{{ t.nameRequired }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ t.role }}</mat-label>
+      <input
+        matInput
+        formControlName="role"
+        [maxlength]="limits.roleMaxLength"
+        [matAutocomplete]="roles"
+        autocomplete="off"
+      />
+      <mat-autocomplete #roles="matAutocomplete">
+        @for (role of roleOptions(); track role) {
+          <mat-option [value]="role">{{ role }}</mat-option>
+        }
+      </mat-autocomplete>
+      <mat-hint>{{ t.roleHint }}</mat-hint>
+    </mat-form-field>
+
+    <fieldset class="group">
+      <legend id="tags-legend">{{ t.tags }}</legend>
+      <mat-chip-listbox
+        formControlName="tags"
+        multiple
+        aria-labelledby="tags-legend"
+        aria-describedby="tags-hint"
+      >
+        @for (tag of roleTags; track tag) {
+          <mat-chip-option [value]="tag">{{ i18n.t().tags[tag] }}</mat-chip-option>
+        }
+      </mat-chip-listbox>
+      <p class="hint" id="tags-hint">{{ t.tagsHint }}</p>
+    </fieldset>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ t.link }}</mat-label>
+      <input
+        matInput
+        type="url"
+        inputmode="url"
+        formControlName="link"
+        [maxlength]="limits.linkMaxLength"
+        autocomplete="url"
+        placeholder="https://"
+      />
+      <mat-hint>{{ t.linkHint }}</mat-hint>
+      @if (form.controls.link.hasError('link')) {
+        <mat-error>{{ t.linkInvalid }}</mat-error>
+      }
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button matButton type="button" mat-dialog-close>{{ i18n.t().common.cancel }}</button>
+    <button matButton="filled" type="submit">{{ editing ? t.editAction : t.createAction }}</button>
+  </mat-dialog-actions>
+</form>

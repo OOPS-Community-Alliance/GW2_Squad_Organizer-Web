@@ -1,0 +1,97 @@
+@let t = i18n.t().roles;
+@let tags = i18n.t().tags;
+<section class="panel" aria-labelledby="roles-title">
+  <header class="head">
+    <h2 id="roles-title" [class.visually-hidden]="layout.expanded()">{{ t.title }}</h2>
+  </header>
+
+  <div class="scroll">
+    <fieldset class="required">
+      <legend id="required-legend">{{ t.requiredLabel }}</legend>
+      <mat-chip-listbox
+        multiple
+        [value]="settings.required()"
+        (change)="setRequired($event.value)"
+        aria-labelledby="required-legend"
+        aria-describedby="required-hint"
+      >
+        @for (tag of allTags; track tag) {
+          <mat-chip-option [value]="tag">{{ tags[tag] }}</mat-chip-option>
+        }
+      </mat-chip-listbox>
+      <p class="hint" id="required-hint">{{ t.requiredHint }}</p>
+    </fieldset>
+
+    @if (overview().occupied === 0) {
+      <p class="status">
+        <mat-icon svgIcon="info" aria-hidden="true" />
+        {{ t.noRoles }}
+      </p>
+    } @else {
+      <p class="status" [class.warn]="gaps() > 0" role="status">
+        <mat-icon [svgIcon]="gaps() ? 'warning' : 'check_circle'" aria-hidden="true" />
+        {{ gaps() ? t.gaps(gaps()) : t.ok }}
+      </p>
+
+      <h3>{{ t.totals }}</h3>
+      <ul class="totals" role="list">
+        @for (entry of totals(); track entry.tag) {
+          <li [class.zero]="!entry.count">
+            @if (tagIcon(entry.tag); as icon) {
+              <img [src]="icon" alt="" width="24" height="24" />
+            }
+            <span class="label">{{ tags[entry.tag] }}</span>
+            <span class="count">{{ entry.count }}</span>
+          </li>
+        }
+      </ul>
+
+      @if (settings.required().length) {
+        <h3>{{ t.perGroup }}</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">{{ t.group }}</th>
+                <th scope="col">{{ t.players }}</th>
+                @for (tag of settings.required(); track tag) {
+                  <th scope="col">{{ tags[tag] }}</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (group of overview().groups; track $index) {
+                <tr>
+                  <th scope="row">{{ $index + 1 }}</th>
+                  <td>{{ group.occupied || t.emptyGroup }}</td>
+                  @for (tag of settings.required(); track tag) {
+                    @if (group.missing.includes(tag)) {
+                      <td class="missing">
+                        <mat-icon svgIcon="warning" aria-hidden="true" />
+                        {{ t.missing }}
+                      </td>
+                    } @else {
+                      <td>{{ group.occupied ? (group.counts[tag] ?? 0) : '–' }}</td>
+                    }
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      @if (overview().roles.length) {
+        <h3>{{ t.byRole }}</h3>
+        <ul class="by-role" role="list">
+          @for (entry of overview().roles; track entry.role) {
+            <li>
+              <span>{{ entry.role }}</span>
+              <span class="count">{{ entry.count }}</span>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </div>
+</section>

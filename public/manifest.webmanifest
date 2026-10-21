@@ -1,0 +1,20 @@
+{
+  "name": "GW2 Squad Organizer",
+  "short_name": "Squad Organizer",
+  "description": "WvW-Squads für Guild Wars 2 planen: Gruppen, Builds, Rollen-Übersicht und Teilen per Link.",
+  "lang": "de",
+  "display": "standalone",
+  "scope": "./",
+  "start_url": "./",
+  "id": "./",
+  "background_color": "#101820",
+  "theme_color": "#1b2531",
+  "categories": ["games", "utilities"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

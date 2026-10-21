@@ -1,0 +1,79 @@
+@let t = i18n.t().group;
+<section class="group" [attr.aria-labelledby]="'group-title-' + index()">
+  <header class="head">
+    <h3 class="title" [id]="'group-title-' + index()">{{ t.title(number()) }}</h3>
+    @if (occupied()) {
+      <ul class="roles" role="list">
+        @for (role of roles(); track role.tag) {
+          <li class="role" [class.missing]="role.missing">
+            <mat-icon [svgIcon]="role.missing ? 'warning' : 'check'" aria-hidden="true" />
+            {{ role.label }}
+          </li>
+        }
+      </ul>
+    }
+    <button
+      matIconButton
+      type="button"
+      class="menu"
+      [matMenuTriggerFor]="menu"
+      [attr.aria-label]="t.menu(number())"
+    >
+      <mat-icon svgIcon="more_vert" />
+    </button>
+  </header>
+
+  <ul class="slots" role="list" [attr.aria-label]="t.slots(number(), group().slots.length)">
+    @for (value of group().slots; track $index) {
+      <li>
+        <app-slot
+          [ref]="{ group: index(), slot: $index }"
+          [value]="value"
+          [tabbable]="$index === tabSlot()"
+        />
+      </li>
+    }
+    @if (group().slots.length < maxSlots) {
+      <li>
+        <button
+          type="button"
+          class="add"
+          (click)="actions.addSlot(index())"
+          [attr.aria-label]="t.addSlot(number())"
+        >
+          <mat-icon svgIcon="add" aria-hidden="true" />
+        </button>
+      </li>
+    }
+  </ul>
+</section>
+
+<mat-menu #menu="matMenu">
+  <button
+    mat-menu-item
+    type="button"
+    (click)="actions.removeLastSlot(index())"
+    [disabled]="group().slots.length <= 1"
+  >
+    <mat-icon svgIcon="remove" />
+    <span>{{ t.removeSlot }}</span>
+  </button>
+  <button
+    mat-menu-item
+    type="button"
+    (click)="actions.clearGroup(index())"
+    [disabled]="!occupied()"
+  >
+    <mat-icon svgIcon="restart_alt" />
+    <span>{{ t.clear }}</span>
+  </button>
+  <button
+    mat-menu-item
+    type="button"
+    (click)="actions.removeGroup(index())"
+    [disabled]="groupCount() <= 1"
+  >
+    <mat-icon svgIcon="delete" />
+    <span>{{ t.remove }}</span>
+  </button>
+</mat-menu>

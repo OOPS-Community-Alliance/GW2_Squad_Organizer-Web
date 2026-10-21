@@ -1,0 +1,50 @@
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--ugm-space-2);
+  min-block-size: var(--app-top-bar-height);
+  padding-block: var(--ugm-space-2);
+  padding-inline: max(var(--ugm-space-4), env(safe-area-inset-left))
+    max(var(--ugm-space-2), env(safe-area-inset-right));
+  padding-block-start: max(var(--ugm-space-2), env(safe-area-inset-top));
+  background: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface);
+}
+
+.logo {
+  flex-shrink: 0;
+}
+
+.title {
+  margin: 0 var(--ugm-space-2) 0 0;
+  font: var(--ugm-type-title-l);
+  white-space: nowrap;
+}
+
+.switcher {
+  min-inline-size: 0;
+  max-inline-size: 22rem;
+}
+
+.squad-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--ugm-type-title-m);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.menu-label {
+  padding: var(--ugm-space-2) var(--ugm-space-4) var(--ugm-space-1);
+  font: var(--ugm-type-label-s);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.divider {
+  margin: var(--ugm-space-1) 0;
+  border: none;
+  border-block-start: 1px solid var(--mat-sys-outline-variant);
+}
